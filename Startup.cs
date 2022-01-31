@@ -47,17 +47,22 @@ namespace Advantage.API
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
+            SetupEndpoints(app);
+            seed.SeedData(20, 1000);
+        }
+        
+        private static void SetupEndpoints(IApplicationBuilder app)
+        {
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+   
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "api/{controller}/{action}/{id?}");
             });
-            
-            seed.SeedData(20, 1000);
         }
     }
 }
