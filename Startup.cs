@@ -30,6 +30,14 @@ namespace Advantage.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    c => c
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+            });
+            
             services.AddMvc();
             services.AddDbContext<ApiContext>(options =>
                 options.UseMySQL(
@@ -44,6 +52,7 @@ namespace Advantage.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors("CorsPolicy");
             }
 
             app.UseHttpsRedirection();
